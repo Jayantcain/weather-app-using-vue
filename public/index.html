@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<div id="app">
+    <div class="header">
+        <div class="title">
+            <p>Travel Assistant</p>
+        </div>
+    </div>
+    <div class="searchBar">
+        <input type="text" placeholder="City name" v-model="cityName" />
+        <button v-on:click="getData">Go</button>
+    </div>
+    <div v-if="valid" class="mainContent">
+        <div v-if="errored">
+            <p>An error occurred while fetching the data :(</p>
+        </div>
+        <div v-else-if="loading">
+            <p>Loading...</p>
+        </div>
+        <div v-else>
+            <div class="aqi">
+                <h3>Air Quality Index (AQI)</h3>
+                <p>{{ +aqi.toFixed(2) }} ({{ aqiDescription }})</p>
+                <img v-bind:src="aqiImage" />
+            </div>
+            <div class="packingList">
+                <h3>Packing List</h3>
+                <ul>
+                    <li v-for="item in packingList">{{ item }}</li>
+                </ul>
+            </div>
+
+            <div class="weatherForecast">
+                <h3>Weather Forecast</h3>
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temperature (C)</th>
+                        <th>Wind Speed (m/s)</th>
+                        <th>Rainfall (mm)</th>
+                    </tr>
+                    <tr v-for="(data, date, index) in weatherForecast">
+                        <td>{{ date }}</td>
+                        <td>{{ +data.temperature.toFixed(2) }}</td>
+                        <td>{{ +data.windSpeed.toFixed(2) }}</td>
+                        <td>{{ +data.rainfall.toFixed(2) }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div v-else class="mainContent">
+        <p>Please enter a city and press 'Go' to get results...</p>
+    </div>
+</div>
+<script>
+    const { createApp } = Vue
+
+    createApp({
+        data() {
+            return {
+                valid: false,
+                cityName: '',
+                errored: false,
+                packingList: [],
+                weatherForecast: [],
+                loading: false,
+            }
+        },
+        methods: {
+            // Get data from server-side app
+            getData: function (event) {
+                if (this.cityName == '') {
+                    // If user hasn't entered any city name,
+                    // we should prompt user to enter one.
+                    // This is accomplished by the 'valid'
+                    // flag, which decides what is shown to
+                    // the user.
+                    this.valid = false
+                } else {
+                    this.valid = true;
+                    // The 'loading' flag displays the text 'Loading...'
+                    // to the user while the data is fetched from
+                    // server side.
+                    this.loading = true;
+                    const data = fetch(`/data/${this.cityName}`)
+                        .then(async response => {
+                            const data = await response.json();
+                            // Data fetched; set 'loading' flag
+                            // to false.
+                            this.loading = false;
+                            // If an error occurred on the server-side,
+                            // this flag will be set. In that case,
+                            // we will skip the extraction of the data
+                            // from the response object.
+                            this.errored = data['errored'];
+                            if (!data['errored']) {
+                                // Extract data from response object.
+                                this.packingList = data['packingList'];
+                                this.weatherForecast = data['forecastSummary'];
+                                this.aqi = data['aqi'];
+                                aqiDescriptionMap = {
+                                    1: 'Good',
+                                    2: 'Fair',
+                                    3: 'Moderate',
+                                    4: 'Poor',
+                                    5: 'Very Poor',
+                                }
+                                aqiRounded = Math.round(this.aqi);
+                                this.aqiDescription = aqiDescriptionMap[aqiRounded];
+                                this.aqiImage = `bar${aqiRounded}.jpeg`;
+                            }
+                        })
+                }
+            }
+        }
+    }).mount('#app')
+</script>
+
+</html>

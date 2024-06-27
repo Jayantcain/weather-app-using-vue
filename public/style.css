@@ -1,0 +1,96 @@
+:root {
+    --deep-rusted-red: #c1432e;
+    --silver-head-dress: #4b6777;
+    --rusted-gold: #ce9e62;
+    --not-so-black: #2c2c2c;
+}
+
+.weatherForecast table,
+th,
+tr,
+td {
+    border: 1px solid black
+}
+
+.header {
+    margin-bottom: 10px;
+}
+
+.title {
+    width: 25%;
+    margin: 20px auto;
+    padding: 10px;
+    font-family: sans-serif;
+    font-size: 30px;
+    color: var(--silver-head-dress);
+    border: 2px solid var(--silver-head-dress);
+}
+
+.title p {
+    margin: 0px;
+    text-align: center;
+}
+
+.searchBar {
+    text-align: center;
+}
+
+.searchBar input {
+    margin: 7px;
+    font-size: large;
+    border: 0;
+    border-bottom: 2px solid var(--silver-head-dress);
+    transition: border-color 0.2s;
+    color: var(--silver-head-dress);
+}
+
+.searchBar input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--deep-rusted-red);
+    transition: border-color 0.2s;
+    color: var(--deep-rusted-red);
+}
+
+.searchBar button {
+    margin: 7px;
+    font-size: large;
+    padding: 5px 10px;
+    background: transparent;
+    border: 1px solid var(--silver-head-dress);
+    color: var(--silver-head-dress);
+    border-radius: 4px;
+}
+
+.searchBar button:hover {
+    color: var(--deep-rusted-red);
+    border: 1px solid var(--deep-rusted-red);
+    cursor: pointer;
+}
+
+.searchBar button:active {
+    background: var(--deep-rusted-red);
+    color: white;
+    cursor: pointer;
+}
+
+.mainContent {
+    text-align: center;
+    color: var(--silver-head-dress);
+}
+
+ul {
+    display: table;
+    margin: 0 auto;
+    list-style: none;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td,
+th {
+    padding: 10px;
+}

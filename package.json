@@ -1,0 +1,16 @@
+{
+  "name": "city-weather-app",
+  "version": "1.0.0",
+  "description": "Get weather of a city and items to pack",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jayant",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7",
+    "path": "^0.12.7"
+  }
+}
